@@ -83,6 +83,17 @@
                 },
                 {
                     "name": "",
+                    "id": "32746b38-32c1-4ae0-8663-bbc5af78ec50",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "e155fdce-25fd-4432-8696-c2521590301c",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
@@ -100,6 +111,45 @@
                     "processors": "NormalizeVector2",
                     "groups": "",
                     "action": "Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Player Actions",
+            "id": "27703143-9c98-47ba-bfc9-dbc650281bcd",
+            "actions": [
+                {
+                    "name": "Roll",
+                    "type": "Button",
+                    "id": "214a8ca6-5102-4bc7-9621-1dc78fe2cb19",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b1659f95-2141-4868-a2b9-7463c20054a0",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Roll",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5121a052-83ad-4046-bcac-f783df2253fa",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Roll",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
