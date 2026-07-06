@@ -18,6 +18,7 @@ namespace SG {
         {
             inputHandler.isInteracting = anim.anim.GetBool("isInteracting");
             inputHandler.rollFlag = false;
+            inputHandler.sprintFlag = false;
         }
     }
 }

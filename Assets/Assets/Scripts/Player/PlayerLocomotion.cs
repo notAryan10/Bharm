@@ -19,6 +19,10 @@ namespace SG {
         float movementSpeed = 5;
         [SerializeField]
         float rotationSpeed = 10;
+        [SerializeField]
+        public float sprintSpeed = 7;
+
+        public bool isSprinting;
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
@@ -34,6 +38,7 @@ namespace SG {
         public void Update()
         {
             float delta = Time.deltaTime;
+
             if (animatorHandler.anim.GetBool("isInteracting") &&
                 !animatorHandler.anim.GetCurrentAnimatorStateInfo(0).IsName("Rolling") &&
                 !animatorHandler.anim.IsInTransition(0))
@@ -86,19 +91,31 @@ namespace SG {
         {
             if (animatorHandler.anim.GetBool("isInteracting"))
                 return;
-
+            if (inputHandler.rollFlag)
+                return;
             moveDirection = cameraObject.forward * inputHandler.vertical;
             moveDirection += cameraObject.right * inputHandler.horizontal;
             moveDirection.Normalize();
             moveDirection.y = 0;
 
             float speed = movementSpeed;
-            moveDirection *= speed;
+
+            if (inputHandler.sprintFlag && inputHandler.moveAmount > 0.5f)
+            {
+                speed = sprintSpeed;
+                isSprinting = true;
+                moveDirection *= speed;
+            }
+            else
+            {
+                isSprinting = false;
+                moveDirection *= speed * inputHandler.moveAmount;
+            }
 
             Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
             rigidbody.linearVelocity = projectedVelocity;
 
-            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0);
+            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, isSprinting);
 
             if (animatorHandler.canRotate)
             {
