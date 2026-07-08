@@ -3,6 +3,7 @@ using UnityEngine;
 namespace SG {
     public class PlayerLocomotion : MonoBehaviour
     {
+        PlayerManager playerManager;
         Transform cameraObject;
         InputHandler inputHandler;
         Vector3 moveDirection;
@@ -21,11 +22,10 @@ namespace SG {
         float rotationSpeed = 10;
         [SerializeField]
         public float sprintSpeed = 7;
-
-        public bool isSprinting;
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
+            playerManager = GetComponent<PlayerManager>();
             rigidbody = GetComponent<Rigidbody>();
             inputHandler = GetComponent<InputHandler>();
             animatorHandler = GetComponentInChildren<AnimatorHandler>();
@@ -34,29 +34,6 @@ namespace SG {
             animatorHandler.Initialize();
             Application.targetFrameRate = 60;
         }
-
-        public void Update()
-        {
-            float delta = Time.deltaTime;
-
-            if (animatorHandler.anim.GetBool("isInteracting") &&
-                !animatorHandler.anim.GetCurrentAnimatorStateInfo(0).IsName("Rolling") &&
-                !animatorHandler.anim.IsInTransition(0))
-            {
-                animatorHandler.anim.SetBool("isInteracting", false);
-                animatorHandler.anim.applyRootMotion = false;
-            }
-
-            inputHandler.TickInput(delta);
-            HandleMovement(delta);
-            HandleRollingAndSprinting(delta);
-
-        }
-
-        // private void LateUpdate()
-        // {
-        //     inputHandler.rollFlag = false;
-        // }
 
         #region Movement
         Vector3 normalVector;
@@ -103,19 +80,19 @@ namespace SG {
             if (inputHandler.sprintFlag && inputHandler.moveAmount > 0.5f)
             {
                 speed = sprintSpeed;
-                isSprinting = true;
+                playerManager.isSprinting = true;
                 moveDirection *= speed;
             }
             else
             {
-                isSprinting = false;
+                playerManager.isSprinting = false;
                 moveDirection *= speed * inputHandler.moveAmount;
             }
 
             Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
             rigidbody.linearVelocity = projectedVelocity;
 
-            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, isSprinting);
+            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, playerManager.isSprinting);
 
             if (animatorHandler.canRotate)
             {

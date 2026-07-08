@@ -12,32 +12,18 @@ namespace SG {
         public bool rollFlag;
         public float rollInputTimer;
         public bool sprintFlag;
-        public bool isInteracting;
+
         PlayerControls inputActions;
 
-        CameraHandler cameraHandler;
+
         Vector2 movementInput;
         Vector2 cameraInput;
-
-        private void Awake()
-        {
-            cameraHandler = CameraHandler.singleton;
-        }
-
-        private void FixedUpdate()
-        {
-            float delta = Time.fixedDeltaTime;
-            cameraHandler.FollowTarget(delta);
-            cameraHandler.HandleCameraRotation(delta, mouseX, mouseY);
-        }
 
         public void OnEnable()
         {
             if (inputActions == null)
             {
                 inputActions = new PlayerControls();
-                inputActions.PlayerMovement.Movement.performed += inputActions => movementInput = inputActions.ReadValue<Vector2>();
-                inputActions.PlayerMovement.Camera.performed += i => cameraInput = i.ReadValue<Vector2>();
             }
             inputActions.Enable();
         } 
@@ -54,9 +40,21 @@ namespace SG {
         }
         private void MoveInput(float delta)
         {
+            movementInput = inputActions.PlayerMovement.Movement.ReadValue<Vector2>();
+            cameraInput = inputActions.PlayerMovement.Camera.ReadValue<Vector2>();
+
             horizontal = movementInput.x;
             vertical = movementInput.y;
             moveAmount = Mathf.Clamp01(Mathf.Abs(horizontal) + Mathf.Abs(vertical));
+
+            // ponytail: stick-drift deadzone. Raise 0.1f if the character still creeps.
+            if (moveAmount < 0.1f)
+            {
+                horizontal = 0;
+                vertical = 0;
+                moveAmount = 0;
+            }
+
             mouseX = cameraInput.x;
             mouseY = cameraInput.y;
         }
