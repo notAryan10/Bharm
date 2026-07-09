@@ -213,7 +213,7 @@ namespace SG {
                 }
             }
 
-            if (playerManager.isInteracting || inputHandler.moveAmount > 0)
+            if (playerManager.isInteracting || inputHandler.moveAmount > 0 || playerManager.isGrounded)
             {
                 myTransform.position = Vector3.Lerp(myTransform.position, targetPosition, Time.deltaTime / 0.1f);
             }
