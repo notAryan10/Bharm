@@ -14,7 +14,8 @@ namespace SG {
         public static CameraHandler singleton;
 
         public float lookSpeed = 0.1f;
-        public float followSpeed = 0.1f;
+        public float followSpeed = 0.2f;
+        public float fallFollowSpeed = 0.4f;
         public float pivotSpeed = 0.03f;
         private float targetPosition;
         public float defaultPosition;
@@ -37,9 +38,10 @@ namespace SG {
             ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10);
         }
 
-        public void FollowTarget(float delta)
+        public void FollowTarget(float delta, bool isFalling = false)
         {
-            Vector3 targetPosition = Vector3.SmoothDamp(myTransform.position, targetTransform.position, ref cameraFollowVelocity, delta / followSpeed);
+            float speed = isFalling ? fallFollowSpeed : followSpeed;
+            Vector3 targetPosition = Vector3.SmoothDamp(myTransform.position, targetTransform.position, ref cameraFollowVelocity, delta / speed);
             myTransform.position = targetPosition;
 
             HandleCameraCollisions(delta);

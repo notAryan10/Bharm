@@ -9,7 +9,11 @@ namespace SG {
         PlayerLocomotion playerLocomotion;
         int vertical;
         int horizontal;
+        int isInteractingHash;
         public bool canRotate;
+
+        // reads the animator fresh, just skips the per-call string→hash lookup
+        public bool IsInteracting => anim.GetBool(isInteractingHash);
 
         public void Initialize()
         {
@@ -19,6 +23,7 @@ namespace SG {
             playerManager = GetComponentInParent<PlayerManager>();
             vertical = Animator.StringToHash("Vertical");
             horizontal = Animator.StringToHash("Horizontal");
+            isInteractingHash = Animator.StringToHash("isInteracting");
         }
 
         public void UpdateAnimatorValues(float verticalMovement, float horizontalMovement, bool isSprinting)
@@ -89,7 +94,7 @@ namespace SG {
         public void PlayTargetAnimation(string targetAnim, bool isInteracting)
         {
             anim.applyRootMotion = isInteracting;
-            anim.SetBool("isInteracting", isInteracting);
+            anim.SetBool(isInteractingHash, isInteracting);
             anim.CrossFade(targetAnim, 0.2f);
         }
 
@@ -103,6 +108,8 @@ namespace SG {
             Vector3 deltaPosition = anim.deltaPosition;
             deltaPosition.y = 0;
             Vector3 velocity = deltaPosition / delta;
+            // ponytail: keep current fall/gravity velocity so rolling off a ledge doesn't hover
+            velocity.y = playerLocomotion.rigidbody.linearVelocity.y;
             playerLocomotion.rigidbody.linearVelocity = velocity;
         }
 

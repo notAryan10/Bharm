@@ -30,12 +30,12 @@ namespace SG {
         // Update is called once per frame
         void Update()
         {
-            isInteracting = anim.anim.GetBool("isInteracting");
+            isInteracting = anim.IsInteracting;
             inputHandler.rollFlag = false;
             inputHandler.sprintFlag = false;
                         float delta = Time.deltaTime;
 
-            if (playerLocomotion.animatorHandler.anim.GetBool("isInteracting") &&
+            if (playerLocomotion.animatorHandler.IsInteracting &&
                 !playerLocomotion.animatorHandler.anim.GetCurrentAnimatorStateInfo(0).IsName("Rolling") &&
                 !playerLocomotion.animatorHandler.anim.IsInTransition(0))
             {
@@ -55,7 +55,7 @@ namespace SG {
             float delta = Time.fixedDeltaTime;
             if (cameraHandler != null)
             {
-                cameraHandler.FollowTarget(delta);
+                cameraHandler.FollowTarget(delta, isInAir);
                 cameraHandler.HandleCameraRotation(delta, inputHandler.mouseX, inputHandler.mouseY);
             }
         }

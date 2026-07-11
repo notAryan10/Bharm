@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cf3f1a7f2c3f4973ac627a8690f397c, type: 3}
+  m_Name: Sword
+  m_EditorClassIdentifier: Assembly-CSharp::SG.WeaponItem
+  itemIcon: {fileID: 0}
+  itemName: Sword
+  weaponPrefab: {fileID: 161241675595582206, guid: e94446bf479f44ee5a6a677accf17842, type: 3}
+  isUnarmed: 0

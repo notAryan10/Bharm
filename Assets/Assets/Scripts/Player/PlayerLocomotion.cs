@@ -39,6 +39,8 @@ namespace SG {
         {
             playerManager = GetComponent<PlayerManager>();
             rigidbody = GetComponent<Rigidbody>();
+            // ponytail: sweep collider along its path so fast falls don't tunnel through ground
+            rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
             inputHandler = GetComponent<InputHandler>();
             animatorHandler = GetComponentInChildren<AnimatorHandler>();
             cameraObject = Camera.main.transform;
@@ -82,7 +84,7 @@ namespace SG {
         {
             if (playerManager.isInAir)
                 return;
-            if (animatorHandler.anim.GetBool("isInteracting"))
+            if (animatorHandler.IsInteracting)
                 return;
             if (inputHandler.rollFlag)
                 return;
@@ -123,9 +125,9 @@ namespace SG {
         {
             if (playerManager.isInAir)
                 return;
-            if (animatorHandler.anim.GetBool("isInteracting"))
+            if (animatorHandler.IsInteracting)
                 return;
-            
+
             if (inputHandler.rollFlag)
             {
                 moveDirection = cameraObject.forward * inputHandler.vertical;
